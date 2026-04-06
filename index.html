@@ -204,53 +204,157 @@
     .nav-links a:hover { color: var(--white); }
     .nav-act { display: flex; align-items: center; gap: 10px; }
 
-    /* ── HAMBURGER + MOBILE MENU ── */
+    /* ── HAMBURGER ── */
     .nav-burger {
       display: none;
+      width: 40px; height: 40px;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
       gap: 5px;
-      background: transparent;
-      border: none;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
       cursor: pointer;
-      padding: 8px;
-      margin-left: 4px;
+      padding: 0;
+      flex-shrink: 0;
+      position: relative; z-index: 200;
+      transition: background .2s, border-color .2s;
     }
+    .nav-burger:hover { background: rgba(0,77,255,.12); border-color: rgba(0,77,255,.4); }
     .nav-burger span {
       display: block;
-      width: 22px; height: 2px;
+      height: 1.5px; border-radius: 2px;
       background: var(--white);
-      border-radius: 2px;
-      transition: transform .3s, opacity .3s;
+      transition: transform .4s cubic-bezier(.25,1,.5,1), opacity .3s, width .3s;
     }
-    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-burger.open span:nth-child(2) { opacity: 0; }
-    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-burger span:nth-child(1) { width: 18px; }
+    .nav-burger span:nth-child(2) { width: 12px; align-self: flex-start; margin-left: 3px; }
+    .nav-burger span:nth-child(3) { width: 18px; }
+    .nav-burger.open { opacity: 0; pointer-events: none; }
+
+    /* ── MOBILE MENU (SLIDE-IN PANEL) ── */
     .nav-mob {
-      display: none;
-      position: absolute;
-      top: 68px; left: 0; right: 0;
-      background: rgba(7,9,15,.97);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-      padding: 20px 24px 28px;
-      flex-direction: column;
-      gap: 20px;
-      z-index: 99;
+      position: fixed; inset: 0; z-index: 150;
+      pointer-events: none;
     }
-    .nav-mob.open { display: flex; }
+    .nav-mob.open { pointer-events: all; }
+
+    /* Backdrop */
+    .nav-mob-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(4,6,12,.75);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 0;
+      transition: opacity .4s cubic-bezier(.25,1,.5,1);
+    }
+    .nav-mob.open .nav-mob-backdrop { opacity: 1; }
+
+    /* Slide panel */
+    .nav-mob-panel {
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: min(360px, 88vw);
+      background: #07090F;
+      border-left: 1px solid rgba(0,77,255,.28);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .48s cubic-bezier(.25,1,.5,1);
+      overflow: hidden;
+    }
+    .nav-mob.open .nav-mob-panel { transform: translateX(0); }
+
+    /* Panel – header row */
+    .nav-mob-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .nav-mob-close {
+      width: 36px; height: 36px; flex-shrink: 0;
+      border: 1px solid var(--border); border-radius: 8px;
+      background: rgba(255,255,255,.04);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--lg);
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .nav-mob-close:hover { background: rgba(0,77,255,.15); border-color: rgba(0,77,255,.45); color: var(--white); }
+
+    /* Panel – navigation area */
+    .nav-mob-nav {
+      flex: 1; padding: 28px 22px 20px;
+      display: flex; flex-direction: column; justify-content: center;
+      overflow: auto;
+    }
     .nav-mob-links { list-style: none; display: flex; flex-direction: column; }
+    .nav-mob-links li {
+      opacity: 0;
+      transform: translateX(24px);
+      transition: opacity .4s, transform .4s;
+    }
+    .nav-mob.open .nav-mob-links li:nth-child(1) { opacity:1; transform:translateX(0); transition-delay:.08s; }
+    .nav-mob.open .nav-mob-links li:nth-child(2) { opacity:1; transform:translateX(0); transition-delay:.14s; }
+    .nav-mob.open .nav-mob-links li:nth-child(3) { opacity:1; transform:translateX(0); transition-delay:.20s; }
+    .nav-mob.open .nav-mob-links li:nth-child(4) { opacity:1; transform:translateX(0); transition-delay:.26s; }
     .nav-mob-links a {
-      display: block; padding: 13px 0;
-      font-size: 1rem; font-weight: 500; color: var(--lg);
-      text-decoration: none; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+      padding: 19px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      transition: padding-left .25s;
+    }
+    .nav-mob-links li:last-child a { border-bottom: none; }
+    .nav-mob-links a:hover { padding-left: 6px; }
+    .nm-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: .7rem; letter-spacing: .12em;
+      color: var(--blue-l); min-width: 22px;
       transition: color .2s;
     }
-    .nav-mob-links a:hover { color: var(--white); }
-    .nav-mob-links li:last-child a { border-bottom: none; }
-    .nav-mob-act { display: flex; flex-direction: column; gap: 10px; }
-    .nav-mob-act .btn { width: 100%; justify-content: center; }
+    .nm-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.65rem; letter-spacing: .03em;
+      text-transform: uppercase; color: var(--white); flex: 1; line-height: 1;
+      transition: color .25s;
+    }
+    .nm-arrow {
+      color: var(--grey); flex-shrink: 0;
+      transition: color .25s, transform .25s;
+      display: flex; align-items: center;
+    }
+    .nav-mob-links a:hover .nm-label { color: var(--cyan); }
+    .nav-mob-links a:hover .nm-num   { color: var(--cyan); }
+    .nav-mob-links a:hover .nm-arrow { color: var(--cyan); transform: translateX(5px); }
+
+    /* Panel – footer / CTA area */
+    .nav-mob-footer {
+      padding: 22px;
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 10px;
+      flex-shrink: 0;
+    }
+    .nav-mob-footer .btn { width: 100%; justify-content: center; }
+    .nav-mob-contact {
+      display: flex; align-items: center; gap: 8px;
+      padding-top: 14px;
+      font-size: .78rem; color: var(--grey);
+    }
+    .nav-mob-contact svg { color: var(--blue-l); flex-shrink: 0; }
+
+    /* Panel – decorative glows */
+    .nm-glow {
+      position: absolute; bottom: -100px; right: -80px;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(0,77,255,.16) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .nm-glow2 {
+      position: absolute; top: 80px; left: -80px;
+      width: 240px; height: 240px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(0,212,255,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
 
     /* ── HERO ── */
     .hero {
@@ -729,8 +833,7 @@
     @media (max-width: 768px) {
       .sec            { padding: 64px 0; }
       .nav-links      { display: none; }
-      .nav-act .btn-s { display: none; }
-      .nav-act .btn-p { font-size: .78rem; padding: 10px 16px; }
+      .nav-act        { display: none; }
       .nav-burger     { display: flex; }
       .why-hd, .fw-card, .tes-layout, .faq-layout, .footer-top { grid-template-columns: 1fr; }
       .faq-left       { position: static; }
@@ -794,15 +897,81 @@
       <span></span><span></span><span></span>
     </button>
   </div>
-  <div class="nav-mob" id="navMob">
-    <ul class="nav-mob-links">
-      <li><a href="servicios.html">Servicios</a></li>
-      <li><a href="web.html">Tu Página Web</a></li>
-      <li><a href="nosotros.html">Nosotros</a></li>
-    </ul>
-    <div class="nav-mob-act">
-      <a href="#contacto" class="btn btn-s">Contacto</a>
-      <a href="#llamada"  class="btn btn-p">Agendar llamada</a>
+  <div class="nav-mob" id="navMob" aria-hidden="true">
+    <div class="nav-mob-backdrop" id="navBackdrop"></div>
+    <div class="nav-mob-panel">
+      <!-- Decorative glows -->
+      <div class="nm-glow"></div>
+      <div class="nm-glow2"></div>
+
+      <!-- Header -->
+      <div class="nav-mob-header">
+        <a href="#" class="nav-brand">
+          <img src="IntegrativeLogo.svg" height="24" alt="Integrative logo">
+          <span class="brand-name">Integrative</span>
+        </a>
+        <button class="nav-mob-close" id="navClose" aria-label="Cerrar menú">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation links -->
+      <nav class="nav-mob-nav">
+        <ul class="nav-mob-links">
+          <li>
+            <a href="servicios.html">
+              <span class="nm-num">01</span>
+              <span class="nm-label">Servicios</span>
+              <span class="nm-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="web.html">
+              <span class="nm-num">02</span>
+              <span class="nm-label">Tu Página Web</span>
+              <span class="nm-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a href="nosotros.html">
+              <span class="nm-num">03</span>
+              <span class="nm-label">Nosotros</span>
+              <span class="nm-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Footer CTA -->
+      <div class="nav-mob-footer">
+        <a href="#llamada" class="btn btn-p">
+          Agendar llamada
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#contacto" class="btn btn-s">Contacto</a>
+        <div class="nav-mob-contact">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+            <path d="M3 8l9 6 9-6M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          hola@integrative.com.ar
+        </div>
+      </div>
     </div>
   </div>
 </nav>
@@ -1554,16 +1723,30 @@
   /* Mobile nav */
   const burger = document.getElementById('navBurger');
   const navMob = document.getElementById('navMob');
+  const navClose = document.getElementById('navClose');
+  const navBackdrop = document.getElementById('navBackdrop');
+
+  function openMenu() {
+    burger.classList.add('open');
+    navMob.classList.add('open');
+    navMob.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    burger.classList.remove('open');
+    navMob.classList.remove('open');
+    navMob.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
   if (burger && navMob) {
     burger.addEventListener('click', () => {
-      burger.classList.toggle('open');
-      navMob.classList.toggle('open');
+      navMob.classList.contains('open') ? closeMenu() : openMenu();
     });
-    document.querySelectorAll('.nav-mob a').forEach(a => {
-      a.addEventListener('click', () => {
-        burger.classList.remove('open');
-        navMob.classList.remove('open');
-      });
+    navClose?.addEventListener('click', closeMenu);
+    navBackdrop?.addEventListener('click', closeMenu);
+    document.querySelectorAll('.nav-mob-links a, .nav-mob-footer a').forEach(a => {
+      a.addEventListener('click', closeMenu);
     });
   }
 
