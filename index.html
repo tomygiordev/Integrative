@@ -26,7 +26,7 @@
       --border-b:  rgba(0,77,255,0.35);
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       background: var(--bg);
@@ -897,84 +897,66 @@
       <span></span><span></span><span></span>
     </button>
   </div>
-  <div class="nav-mob" id="navMob" aria-hidden="true">
-    <div class="nav-mob-backdrop" id="navBackdrop"></div>
-    <div class="nav-mob-panel">
-      <!-- Decorative glows -->
-      <div class="nm-glow"></div>
-      <div class="nm-glow2"></div>
+</nav>
 
-      <!-- Header -->
-      <div class="nav-mob-header">
-        <a href="#" class="nav-brand">
-          <img src="IntegrativeLogo.svg" height="24" alt="Integrative logo">
-          <span class="brand-name">Integrative</span>
-        </a>
-        <button class="nav-mob-close" id="navClose" aria-label="Cerrar menú">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Navigation links -->
-      <nav class="nav-mob-nav">
-        <ul class="nav-mob-links">
-          <li>
-            <a href="servicios.html">
-              <span class="nm-num">01</span>
-              <span class="nm-label">Servicios</span>
-              <span class="nm-arrow">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="web.html">
-              <span class="nm-num">02</span>
-              <span class="nm-label">Tu Página Web</span>
-              <span class="nm-arrow">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-          <li>
-            <a href="nosotros.html">
-              <span class="nm-num">03</span>
-              <span class="nm-label">Nosotros</span>
-              <span class="nm-arrow">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-
-      <!-- Footer CTA -->
-      <div class="nav-mob-footer">
-        <a href="#llamada" class="btn btn-p">
-          Agendar llamada
-          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a href="#contacto" class="btn btn-s">Contacto</a>
-        <div class="nav-mob-contact">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-            <path d="M3 8l9 6 9-6M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          hola@integrative.com.ar
-        </div>
+<div class="nav-mob" id="navMob" aria-hidden="true">
+  <div class="nav-mob-backdrop" id="navBackdrop"></div>
+  <div class="nav-mob-panel">
+    <div class="nm-glow"></div>
+    <div class="nm-glow2"></div>
+    <div class="nav-mob-header">
+      <a href="#" class="nav-brand">
+        <img src="IntegrativeLogo.svg" height="24" alt="Integrative logo">
+        <span class="brand-name">Integrative</span>
+      </a>
+      <button class="nav-mob-close" id="navClose" aria-label="Cerrar menú">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="nav-mob-nav">
+      <ul class="nav-mob-links">
+        <li>
+          <a href="servicios.html">
+            <span class="nm-num">01</span>
+            <span class="nm-label">Servicios</span>
+            <span class="nm-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        <li>
+          <a href="web.html">
+            <span class="nm-num">02</span>
+            <span class="nm-label">Tu Página Web</span>
+            <span class="nm-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+        <li>
+          <a href="nosotros.html">
+            <span class="nm-num">03</span>
+            <span class="nm-label">Nosotros</span>
+            <span class="nm-arrow"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div class="nav-mob-footer">
+      <a href="#llamada" class="btn btn-p">
+        Agendar llamada
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#contacto" class="btn btn-s">Contacto</a>
+      <div class="nav-mob-contact">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+          <path d="M3 8l9 6 9-6M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        hola@integrative.com.ar
       </div>
     </div>
   </div>
-</nav>
+</div>
 
 <!-- ╔══════════════════════════════════════╗ -->
 <!-- ║            HERO                     ║ -->
