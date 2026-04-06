@@ -204,6 +204,54 @@
     .nav-links a:hover { color: var(--white); }
     .nav-act { display: flex; align-items: center; gap: 10px; }
 
+    /* ── HAMBURGER + MOBILE MENU ── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      margin-left: 4px;
+    }
+    .nav-burger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mob {
+      display: none;
+      position: absolute;
+      top: 68px; left: 0; right: 0;
+      background: rgba(7,9,15,.97);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px 28px;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 99;
+    }
+    .nav-mob.open { display: flex; }
+    .nav-mob-links { list-style: none; display: flex; flex-direction: column; }
+    .nav-mob-links a {
+      display: block; padding: 13px 0;
+      font-size: 1rem; font-weight: 500; color: var(--lg);
+      text-decoration: none; border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+    .nav-mob-links a:hover { color: var(--white); }
+    .nav-mob-links li:last-child a { border-bottom: none; }
+    .nav-mob-act { display: flex; flex-direction: column; gap: 10px; }
+    .nav-mob-act .btn { width: 100%; justify-content: center; }
+
     /* ── HERO ── */
     .hero {
       position: relative; min-height: 100vh;
@@ -607,22 +655,115 @@
     .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
     .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
 
+    /* ── WEB PROMO BANNER ── */
+    .web-promo-sec {
+      padding: 0 0 72px;
+    }
+    .web-promo-inner {
+      position: relative; overflow: hidden;
+      border-radius: 20px; padding: 44px 48px;
+      background:
+        linear-gradient(135deg, rgba(0,77,255,.12) 0%, rgba(0,77,255,.03) 50%, rgba(0,212,255,.07) 100%);
+      border: 1px solid rgba(0,77,255,.35);
+      display: flex; align-items: center; justify-content: space-between; gap: 36px;
+    }
+    .web-promo-orbs { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .wp-orb {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(0,77,255,.15);
+    }
+    .wp-orb-1 {
+      width: 360px; height: 100px;
+      right: -60px; top: -30px;
+      animation: wpSpin1 18s linear infinite;
+    }
+    .wp-orb-2 {
+      width: 220px; height: 60px;
+      right: 20px; bottom: -20px;
+      border-color: rgba(0,212,255,.1);
+      animation: wpSpin1 12s linear infinite reverse;
+    }
+    @keyframes wpSpin1 { to { transform: rotate(360deg); } }
+
+    .web-promo-left { position: relative; z-index: 1; flex: 1; }
+    .web-promo-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 14px;
+    }
+    .web-promo-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+      animation: promoBlink 2s ease-in-out infinite;
+    }
+    @keyframes promoBlink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    .web-promo-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: clamp(1.6rem, 3vw, 2.2rem);
+      text-transform: uppercase; letter-spacing: .01em; line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .web-promo-acc { color: var(--blue-l); }
+    .web-promo-sub {
+      font-size: .88rem; color: var(--lg); line-height: 1.7;
+      max-width: 480px; margin-bottom: 18px;
+    }
+    .web-promo-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .wp-pill {
+      font-size: .72rem; font-weight: 600; letter-spacing: .07em;
+      text-transform: uppercase; color: var(--lg);
+      border: 1px solid var(--border); border-radius: 100px;
+      padding: 4px 12px;
+    }
+    .web-promo-right { position: relative; z-index: 1; flex-shrink: 0; }
+    .web-promo-cta { padding: 14px 28px; font-size: .9rem; white-space: nowrap; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
-      .why-grid   { grid-template-columns: repeat(2,1fr); }
+      .why-grid    { grid-template-columns: repeat(2,1fr); }
       .method-grid { grid-template-columns: 1fr; gap: 40px; }
       .method-left { position: static; }
-      .hero-inner { grid-template-columns: 1fr; }
-      .mock-wrap  { display: none; }
+      .hero-inner  { grid-template-columns: 1fr; }
+      .mock-wrap   { display: none; }
     }
     @media (max-width: 768px) {
+      .sec            { padding: 64px 0; }
+      .nav-links      { display: none; }
+      .nav-act .btn-s { display: none; }
+      .nav-act .btn-p { font-size: .78rem; padding: 10px 16px; }
+      .nav-burger     { display: flex; }
       .why-hd, .fw-card, .tes-layout, .faq-layout, .footer-top { grid-template-columns: 1fr; }
-      .faq-left    { position: static; }
-      .footer-links { grid-template-columns: 1fr; }
-      .nav-links, .nav-act .btn-s { display: none; }
+      .faq-left       { position: static; }
+      .footer-links   { grid-template-columns: 1fr; }
       .ring-1 { width: 420px; height: 420px; }
       .ring-2 { width: 300px; height: 300px; }
       .ring-3 { width: 200px; height: 200px; }
+      .fw-card        { padding: 28px 22px; gap: 28px; }
+      .tes-card       { padding: 24px 26px; }
+      .tes-card.sm    { padding: 20px 22px; }
+      .cta-sec        { padding: 80px 0; }
+      .footer         { padding: 60px 0 28px; }
+      .footer-top     { gap: 40px; margin-bottom: 40px; }
+      .web-promo-inner { flex-direction: column; align-items: flex-start; padding: 32px 28px; gap: 24px; }
+      .web-promo-right { width: 100%; }
+      .web-promo-cta  { width: 100%; justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      .sec   { padding: 48px 0; }
+      .wrap  { padding: 0 16px; }
+      .hero  { padding: 100px 16px 56px; }
+      .hero-title .nowrap { white-space: normal; }
+      .why-grid   { grid-template-columns: 1fr; }
+      .mstep      { grid-template-columns: 52px 1fr; gap: 12px; }
+      .mnum       { font-size: 2.4rem; }
+      .fw-card    { padding: 22px 16px; }
+      .tes-stat   { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .cta-sec    { padding: 64px 0; }
+      .footer-tag { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+      .reassure   { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .ring-1 { width: 280px; height: 280px; }
+      .ring-2 { width: 200px; height: 200px; }
+      .ring-3 { width: 140px; height: 140px; }
     }
   </style>
 </head>
@@ -641,12 +782,25 @@
 
     <ul class="nav-links">
       <li><a href="servicios.html">Servicios</a></li>
-      <li><a href="#proceso">Proceso</a></li>
-      <li><a href="#quienes">¿Para quién?</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="web.html">Tu Página Web</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
     </ul>
 
     <div class="nav-act">
+      <a href="#contacto" class="btn btn-s">Contacto</a>
+      <a href="#llamada"  class="btn btn-p">Agendar llamada</a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mob" id="navMob">
+    <ul class="nav-mob-links">
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="web.html">Tu Página Web</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+    </ul>
+    <div class="nav-mob-act">
       <a href="#contacto" class="btn btn-s">Contacto</a>
       <a href="#llamada"  class="btn btn-p">Agendar llamada</a>
     </div>
@@ -800,9 +954,9 @@
       </div>
       <div>
         <p class="fu d2" style="color:var(--lg);line-height:1.78;font-size:.95rem;margin-top:14px;">
-          No somos una agencia genérica. Somos un equipo técnico especializado
-          en construir lo que tu negocio realmente necesita para escalar, sin
-          fricciones y sin código de relleno.
+          No somos una agencia genérica. Somos un equipo especializado
+          en construir lo que tu negocio realmente necesita para crecer —
+          sin promesas vacías y sin soluciones que no terminan de funcionar.
         </p>
         <div class="fu d3" style="margin-top:22px;">
           <a href="#llamada" class="btn btn-p">Agendar llamada gratuita</a>
@@ -821,7 +975,7 @@
           </svg>
         </div>
         <div class="wc-title">Desarrollo a medida</div>
-        <p class="wc-desc">Ingeniería bespoke para sistemas web, integraciones API y arquitecturas complejas adaptadas a tu infraestructura.</p>
+        <p class="wc-desc">Si la solución que necesitás no existe en el mercado, la construimos. Cada detalle adaptado a cómo trabaja tu empresa, no al revés.</p>
       </div>
 
       <div class="why-card gc fu d1">
@@ -831,8 +985,8 @@
             <path d="M10 6.5v3.5l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="wc-title">SaaS verticalizados</div>
-        <p class="wc-desc">Plataformas cloud-native construidas para industrias específicas: construcción, startups tech, gestión empresarial.</p>
+        <div class="wc-title">Software para tu industria</div>
+        <p class="wc-desc">Tenemos software ya desarrollado para sectores concretos — tiendas de tecnología, constructoras y más. Listo para usar, sin configuraciones complicadas.</p>
       </div>
 
       <div class="why-card gc fu d2">
@@ -842,8 +996,8 @@
             <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/>
           </svg>
         </div>
-        <div class="wc-title">Integración end-to-end</div>
-        <p class="wc-desc">Desde la arquitectura hasta el deployment. Diseño, desarrollo, testing y operaciones bajo un solo punto de responsabilidad.</p>
+        <div class="wc-title">Un solo equipo, de principio a fin</div>
+        <p class="wc-desc">Nos encargamos de todo: diseño, desarrollo y lanzamiento. No tenés que coordinar tres proveedores distintos ni explicar lo mismo dos veces.</p>
       </div>
 
       <div class="why-card gc fu d3">
@@ -853,8 +1007,44 @@
             <path d="M2 18h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="wc-title">Escalabilidad real</div>
-        <p class="wc-desc">Arquitecturas y código diseñados para crecer. Lo que construimos hoy no se convierte en deuda técnica mañana.</p>
+        <div class="wc-title">Construido para crecer</div>
+        <p class="wc-desc">Lo que hacemos hoy soporta el doble de trabajo mañana. Cuando tu negocio crezca, el sistema crece con vos — sin tener que empezar de cero.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║          WEB PROMO BANNER           ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="web-promo-sec">
+  <div class="wrap">
+    <div class="web-promo-inner fu">
+      <div class="web-promo-orbs" aria-hidden="true">
+        <div class="wp-orb wp-orb-1"></div>
+        <div class="wp-orb wp-orb-2"></div>
+      </div>
+      <div class="web-promo-left">
+        <div class="web-promo-tag">
+          <span class="web-promo-dot"></span>
+          Nuevo servicio
+        </div>
+        <h2 class="web-promo-title">Tu página web,<br>lista en <span class="web-promo-acc">7 días.</span></h2>
+        <p class="web-promo-sub">Diseñamos y desarrollamos la web de tu marca o negocio. Con tu identidad — o la creamos nosotros. Y una vez online, nos ocupamos del mantenimiento para que siempre esté al día. <strong style="color:var(--white);">¿Ya tenés una web?</strong> También hacemos mantenimiento de sitios existentes, sin importar quién los hizo.</p>
+        <div class="web-promo-pills">
+          <span class="wp-pill">Diseño personalizado</span>
+          <span class="wp-pill">Branding incluido</span>
+          <span class="wp-pill">Perfecta en celular</span>
+          <span class="wp-pill">Mantenimiento incluido</span>
+        </div>
+      </div>
+      <div class="web-promo-right">
+        <a href="web.html" class="btn btn-p web-promo-cta">
+          Ver más
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
     </div>
   </div>
@@ -886,35 +1076,35 @@
         <div class="mstep fu">
           <div class="mnum">01.</div>
           <div>
-            <div class="mstep-title">Diagnóstico y arquitectura</div>
+            <div class="mstep-title">Entendemos tu negocio</div>
             <ul class="mlist">
-              <li>Analizamos tu stack actual, necesidades técnicas y objetivos de negocio.</li>
-              <li>Definimos la arquitectura óptima y el roadmap técnico completo.</li>
-              <li>Estimamos tiempos, recursos y entregables con total transparencia.</li>
+              <li>Analizamos cómo trabajás hoy, qué herramientas usás y qué necesitás resolver.</li>
+              <li>Definimos la solución más adecuada para tu caso y el plan completo de trabajo.</li>
+              <li>Estimamos tiempos y costos con total transparencia, antes de arrancar.</li>
             </ul>
-            <div class="mresult"><strong>Resultado:</strong> Un plan de ejecución sin ambigüedades, con sprints claros y métricas de éxito definidas.</div>
+            <div class="mresult"><strong>Resultado:</strong> Un plan claro y sin sorpresas, con fechas de entrega y objetivos concretos definidos.</div>
           </div>
         </div>
 
         <div class="mstep fu d1">
           <div class="mnum">02.</div>
           <div>
-            <div class="mstep-title">Desarrollo e integración</div>
+            <div class="mstep-title">Construimos y conectamos</div>
             <ul class="mlist">
-              <li>Construimos con las tecnologías correctas para tu caso específico.</li>
-              <li>Iteramos en sprints cortos con feedback constante y demos semanales.</li>
-              <li>Integramos con tus sistemas existentes de forma limpia y documentada.</li>
+              <li>Construimos con las herramientas más adecuadas para tu caso específico.</li>
+              <li>Avanzamos en etapas cortas y te mostramos el progreso cada semana para que siempre sepas cómo va.</li>
+              <li>Conectamos la nueva solución con las herramientas que ya usás, sin romper lo que funciona.</li>
             </ul>
-            <div class="mresult"><strong>Resultado:</strong> Software funcional, probado, documentado y listo para producción.</div>
+            <div class="mresult"><strong>Resultado:</strong> Una solución funcional, probada y lista para usar en tu negocio desde el primer día.</div>
           </div>
         </div>
 
         <div class="mstep fu d2">
           <div class="mnum">03.</div>
           <div>
-            <div class="mstep-title">Escala y optimización</div>
+            <div class="mstep-title">Te acompañamos mientras crecés</div>
             <ul class="mlist">
-              <li>Monitoreamos performance, uptime y métricas clave en tiempo real.</li>
+              <li>Controlamos que todo funcione bien y te avisamos ante cualquier problema antes de que lo notés.</li>
               <li>Identificamos cuellos de botella y oportunidades de crecimiento.</li>
               <li>Ajustamos y evolucionamos el sistema a la par de tu negocio.</li>
             </ul>
@@ -941,7 +1131,7 @@
         Dos perfiles, un mismo objetivo:<br>tecnología que funciona
       </h2>
       <p class="fu d2" style="color:var(--lg);font-size:.93rem;max-width:500px;margin:0 auto;">
-        Integrative responde a las necesidades de quienes buscan precisión técnica para crecer con confianza.
+        Integrative trabaja con negocios que quieren resultados reales, no promesas.
       </p>
     </div>
 
@@ -960,8 +1150,8 @@
         </div>
         <div>
           <p class="fw-body">
-            Tienes equipos operando sobre sistemas fragmentados, Excel críticos o
-            software heredado que limita tu crecimiento y consume recursos innecesarios.
+            Tus equipos pierden tiempo con Excel, sistemas desconectados o herramientas
+            que ya no dan abasto. Sabemos cómo resolver eso.
           </p>
           <div class="fw-features">
             <div>
@@ -975,9 +1165,9 @@
                 <span class="fw-ftitle">Lo que Integrative aporta</span>
               </div>
               <ul class="fw-flist">
-                <li><span>▸</span>Un sistema robusto construido sobre tu realidad operativa actual.</li>
+                <li><span>▸</span>Un sistema construido específicamente para cómo trabaja tu empresa hoy.</li>
                 <li><span>▸</span>Automatización de los procesos que más tiempo y dinero consumen.</li>
-                <li><span>▸</span>Visión de métricas clave en tiempo real, siempre accesible.</li>
+                <li><span>▸</span>Los números importantes de tu negocio siempre a la vista, desde cualquier lugar.</li>
               </ul>
             </div>
             <div>
@@ -990,8 +1180,8 @@
                 <span class="fw-ftitle">Beneficio concreto</span>
               </div>
               <p class="fw-ftext">
-                <strong>Recuperas tiempo, reduces costos operativos</strong> y obtienes la
-                infraestructura digital para competir en serio.
+                <strong>Recuperás tiempo, reducís costos</strong> y tu empresa tiene las herramientas
+                para competir en serio.
               </p>
             </div>
           </div>
@@ -1012,8 +1202,8 @@
         </div>
         <div>
           <p class="fw-body">
-            Tomás decisiones técnicas sin tiempo para evaluarlas — y cada error
-            hoy se convierte en un problema más grande mañana.
+            Tomás decisiones sobre tecnología sin tener los conocimientos para evaluarlas bien
+            — y cada error hoy se convierte en un problema más grande mañana.
           </p>
           <div class="fw-features">
             <div>
@@ -1027,9 +1217,9 @@
                 <span class="fw-ftitle">Lo que Integrative aporta</span>
               </div>
               <ul class="fw-flist">
-                <li><span>▸</span>CTO-as-a-service: decisiones técnicas estratégicas sin el overhead de contratar.</li>
-                <li><span>▸</span>Arquitectura diseñada para escalar desde el día uno, no para reconstruir.</li>
-                <li><span>▸</span>Desarrollo ágil orientado a métricas de negocio, no solo features.</li>
+                <li><span>▸</span>Tomamos las decisiones tecnológicas por vos, como si tuvieras un experto en tu equipo, sin el costo de contratarlo.</li>
+                <li><span>▸</span>Construimos pensando en el futuro, para que no tengas que volver a empezar cuando tu negocio crezca.</li>
+                <li><span>▸</span>Avanzamos rápido con foco en resultados reales de negocio, no en funcionalidades innecesarias.</li>
               </ul>
             </div>
             <div>
@@ -1042,8 +1232,8 @@
                 <span class="fw-ftitle">Beneficio concreto</span>
               </div>
               <p class="fw-ftext">
-                <strong>Lanzas más rápido, con menos bugs</strong> y con una base técnica
-                que impresionará a inversores y resistirá el crecimiento.
+                <strong>Lanzás más rápido, con menos problemas</strong> y con una base
+                sólida que aguanta el crecimiento.
               </p>
             </div>
           </div>
@@ -1084,7 +1274,7 @@
         Proyectos que hablan<br>por sí solos.
       </h2>
       <p class="fu d2" style="color:var(--lg);font-size:.9rem;max-width:460px;margin:0 auto;">
-        Nuestros clientes transforman su infraestructura digital y escalan con confianza.
+        Nuestros clientes dejan atrás el desorden y pasan a operar con herramientas que realmente funcionan.
       </p>
     </div>
 
@@ -1101,9 +1291,9 @@
           </svg>
         </div>
         <p class="tes-txt">
-          "Integrative transformó por completo nuestra infraestructura. En 4 meses pasamos
-          de un sistema heredado que consumía el 30% del tiempo operativo a una plataforma
-          centralizada que funciona sola. La atención al detalle técnico y la comunicación
+          "Integrative transformó por completo cómo operamos. En 4 meses pasamos
+          de sistemas dispersos que consumían el 30% de nuestro tiempo a un sistema
+          centralizado que funciona solo. La atención al detalle y la comunicación
           constante fueron clave para que el proyecto no se descarrilara ni una sola vez."
         </p>
         <div class="tes-author">
@@ -1123,8 +1313,8 @@
             <div class="tes-lbl">reducción en tiempo de procesos manuales críticos</div>
           </div>
           <p class="tes-txt" style="font-size:.84rem;">
-            "En 3 semanas de diagnóstico identificaron ineficiencias que nosotros no
-            habíamos visto en años. El MVP que construyeron tiene cero deuda técnica visible."
+            "En 3 semanas de trabajo conjunto identificaron problemas que nosotros no
+            habíamos visto en años. El producto que construyeron funciona impecable desde el día uno."
           </p>
           <div class="tes-author">
             <div class="tes-av">A.L.</div>
@@ -1232,11 +1422,10 @@
           </div>
           <div class="faq-a">
             <div class="faq-ai">
-              Trabajamos con un stack tecnológico agnóstico y seleccionamos las herramientas
-              correctas para cada caso. Principalmente React/Next.js, Node.js, Python, bases
-              de datos SQL/NoSQL, infraestructura cloud (AWS, GCP, Vercel) y cualquier integración
-              que tu ecosistema requiera. No imponemos tecnología: analizamos y recomendamos lo
-              que tiene sentido para tu proyecto.
+              Usamos las herramientas más adecuadas para cada caso, sin atarnos a una tecnología en particular.
+              Lo importante no es qué plataforma se usa, sino que el resultado funcione bien, sea estable
+              y pueda crecer con tu negocio. Si ya tenés sistemas en uso, los analizamos y trabajamos
+              para conectarlos o mejorarlos.
             </div>
           </div>
         </div>
@@ -1278,10 +1467,10 @@
           </div>
           <div class="faq-a">
             <div class="faq-ai">
-              Absolutamente. Ofrecemos contratos de soporte y mantenimiento para proyectos
-              existentes, ya sea que hayan sido construidos por nosotros o no. Hacemos una
-              auditoría técnica previa para entender el estado del código y garantizar que
-              podemos comprometernos con un SLA realista.
+              Por supuesto. Ofrecemos contratos de soporte y mantenimiento para proyectos
+              existentes, sin importar si los construimos nosotros o no. Hacemos una revisión
+              previa del sistema para entender su estado y garantizar que podemos comprometernos
+              con un servicio confiable.
             </div>
           </div>
         </div>
@@ -1361,6 +1550,22 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('on', window.scrollY > 20);
   }, { passive: true });
+
+  /* Mobile nav */
+  const burger = document.getElementById('navBurger');
+  const navMob = document.getElementById('navMob');
+  if (burger && navMob) {
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      navMob.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-mob a').forEach(a => {
+      a.addEventListener('click', () => {
+        burger.classList.remove('open');
+        navMob.classList.remove('open');
+      });
+    });
+  }
 
   /* Scroll-reveal */
   const obs = new IntersectionObserver((entries) => {

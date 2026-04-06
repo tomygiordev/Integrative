@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tu Página Web — Integrative</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #07090F;
+      --bg2:       #0B0F1A;
+      --bg3:       #0F1524;
+      --card:      #101726;
+      --blue:      #004DFF;
+      --blue-l:    #1A6FFF;
+      --blue-dim:  rgba(0,77,255,0.12);
+      --blue-glow: rgba(0,77,255,0.45);
+      --cyan:      #00D4FF;
+      --white:     #FFFFFF;
+      --grey:      #5C6B85;
+      --lg:        #A0ABBE;
+      --border:    rgba(255,255,255,0.07);
+      --border-b:  rgba(0,77,255,0.35);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 500;
+      font-size: clamp(3rem, 6.5vw, 5.4rem);
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+    .h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 500;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.08;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.4rem, 2.8vw, 2rem);
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .sec  { padding: 96px 0; }
+
+    /* ── CAPTION ── */
+    .cap { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .cap-line { width: 44px; height: 1px; background: linear-gradient(90deg, var(--blue), transparent); }
+    .cap-line.rev { background: linear-gradient(270deg, var(--blue), transparent); }
+    .cap-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 8px var(--blue); }
+    .cap-text { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); }
+
+    /* ── GRADIENT BORDER CARD ── */
+    .gc {
+      border-radius: 16px;
+      border: 1px solid transparent;
+      background:
+        linear-gradient(var(--card), var(--card)) padding-box,
+        linear-gradient(135deg, rgba(0,77,255,.55) 0%, rgba(0,77,255,.06) 55%, rgba(0,207,255,.3) 100%) border-box;
+      transition: box-shadow .3s;
+    }
+    .gc:hover { box-shadow: 0 0 36px rgba(0,77,255,.16); }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 24px; border-radius: 8px;
+      font-family: 'Barlow', sans-serif; font-weight: 600; font-size: .88rem;
+      letter-spacing: .03em; text-decoration: none; border: none; cursor: pointer;
+      transition: box-shadow .3s, transform .2s, background .2s;
+    }
+    .btn-p {
+      background: var(--blue); color: var(--white);
+      position: relative; overflow: hidden;
+    }
+    .btn-p::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.18), transparent);
+      opacity: 0; transition: opacity .3s;
+    }
+    .btn-p:hover { box-shadow: 0 8px 30px rgba(0,77,255,.55); transform: translateY(-1px); }
+    .btn-p:hover::before { opacity: 1; }
+    .btn-s {
+      background: transparent; color: var(--white);
+      border: 1px solid rgba(255,255,255,.2);
+    }
+    .btn-s:hover { border-color: var(--blue); background: var(--blue-dim); }
+    .btnrow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+    /* ── REASSURE ── */
+    .reassure { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .ri { display: flex; align-items: center; gap: 7px; font-size: .82rem; color: var(--lg); }
+    .ri-check {
+      width: 17px; height: 17px; border-radius: 50%;
+      background: rgba(0,212,255,.12);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .ri-check svg { color: var(--cyan); }
+
+    /* ── NAVBAR ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      transition: background .3s, backdrop-filter .3s, border-color .3s;
+      border-bottom: 1px solid transparent;
+    }
+    .nav.on {
+      background: rgba(7,9,15,.88);
+      backdrop-filter: blur(18px);
+      border-bottom-color: var(--border);
+    }
+    .nav-in {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1.2rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--white);
+    }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-size: .88rem; font-weight: 500; color: var(--lg);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-act { display: flex; align-items: center; gap: 10px; }
+
+    /* ── HAMBURGER + MOBILE MENU ── */
+    .nav-burger {
+      display: none; flex-direction: column; justify-content: center;
+      gap: 5px; background: transparent; border: none; cursor: pointer;
+      padding: 8px; margin-left: 4px;
+    }
+    .nav-burger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-mob {
+      display: none; position: absolute; top: 68px; left: 0; right: 0;
+      background: rgba(7,9,15,.97); backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid var(--border);
+      padding: 20px 24px 28px; flex-direction: column; gap: 20px; z-index: 99;
+    }
+    .nav-mob.open { display: flex; }
+    .nav-mob-links { list-style: none; display: flex; flex-direction: column; }
+    .nav-mob-links a {
+      display: block; padding: 13px 0; font-size: 1rem; font-weight: 500;
+      color: var(--lg); text-decoration: none; border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+    .nav-mob-links a:hover, .nav-mob-links a.active { color: var(--white); }
+    .nav-mob-links li:last-child a { border-bottom: none; }
+    .nav-mob-act { display: flex; flex-direction: column; gap: 10px; }
+    .nav-mob-act .btn { width: 100%; justify-content: center; }
+
+    /* ════════════════════════════════════════════
+       ── HERO ──
+    ════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* ── DOT GRID ── */
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: radial-gradient(circle, rgba(0,77,255,.18) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 50%, black 0%, transparent 100%);
+      animation: gridPulse 5s ease-in-out infinite;
+    }
+    @keyframes gridPulse {
+      0%, 100% { opacity: .35; }
+      50%       { opacity: .65; }
+    }
+
+    /* ── ORBITAL RINGS ── */
+    .hero-orbs {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; z-index: 0;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+    }
+    .orb::before, .orb::after {
+      content: ''; position: absolute;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 10px var(--blue), 0 0 22px var(--blue-glow);
+    }
+
+    /* Orb 1 — wide tilted ellipse, slow */
+    .orb-1 {
+      width: 740px; height: 210px;
+      border: 1px solid rgba(0,77,255,.18);
+      background: conic-gradient(from 0deg, transparent 88%, rgba(0,77,255,.35) 100%);
+      animation: orbSpin1 32s linear infinite;
+    }
+    .orb-1::before { top: -4px;  left: 50%; transform: translateX(-50%); }
+    .orb-1::after  { bottom: -4px; left: 50%; transform: translateX(-50%); }
+
+    /* Orb 2 — medium tilted, opposite direction */
+    .orb-2 {
+      width: 540px; height: 155px;
+      border: 1px solid rgba(0,207,255,.13);
+      background: conic-gradient(from 140deg, transparent 88%, rgba(0,207,255,.25) 100%);
+      animation: orbSpin2 22s linear infinite reverse;
+    }
+    .orb-2::before { top: 50%; right: -4px; transform: translateY(-50%); }
+    .orb-2::after  { top: 50%; left: -4px;  transform: translateY(-50%); }
+
+    /* Orb 3 — small fast */
+    .orb-3 {
+      width: 350px; height: 100px;
+      border: 1px solid rgba(0,77,255,.14);
+      background: conic-gradient(from 260deg, transparent 88%, rgba(0,77,255,.4) 100%);
+      animation: orbSpin3 14s linear infinite;
+    }
+    .orb-3::before { top: -4px; left: 50%; transform: translateX(-50%); }
+    .orb-3::after  { bottom: -4px; left: 50%; transform: translateX(-50%); }
+
+    /* Flat outer ring (like main page) */
+    .orb-flat {
+      width: 820px; height: 820px;
+      border: 1px solid rgba(0,77,255,.07);
+      background: conic-gradient(from 60deg, transparent 0%, transparent 92%, rgba(0,77,255,.2) 100%);
+      animation: orbFlat 45s linear infinite;
+    }
+    .orb-flat::before { top: -4px; left: 50%; transform: translateX(-50%); }
+
+    @keyframes orbSpin1  { from { transform: rotate(-15deg); } to { transform: rotate(345deg); } }
+    @keyframes orbSpin2  { from { transform: rotate(50deg);  } to { transform: rotate(-310deg); } }
+    @keyframes orbSpin3  { from { transform: rotate(80deg);  } to { transform: rotate(440deg); } }
+    @keyframes orbFlat   { to   { transform: rotate(360deg); } }
+
+    /* ── SCAN LINE ── */
+    .scan-line {
+      position: absolute; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%, rgba(0,77,255,.5) 25%,
+        rgba(0,212,255,.35) 50%, rgba(0,77,255,.5) 75%, transparent 100%);
+      pointer-events: none; z-index: 1;
+      animation: scanDown 7s linear infinite;
+    }
+    @keyframes scanDown {
+      0%   { top: -2%; opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { top: 102%; opacity: 0; }
+    }
+
+    /* ── CENTRAL GLOW ── */
+    .hero-glow-c {
+      position: absolute; width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(0,77,255,.15) 0%, rgba(0,77,255,.04) 45%, transparent 70%);
+      pointer-events: none; z-index: 0;
+      animation: glowPulse 6s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { transform: scale(1);    opacity: 1; }
+      50%       { transform: scale(1.15); opacity: .7; }
+    }
+
+    /* ── HERO CONTENT ── */
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 720px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border-b); border-radius: 100px;
+      padding: 6px 16px; margin-bottom: 28px;
+      font-size: .72rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--cyan);
+      background: rgba(0,77,255,.08);
+    }
+    .badge-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--cyan); box-shadow: 0 0 8px var(--cyan);
+      animation: badgeBlink 2.2s ease-in-out infinite;
+    }
+    @keyframes badgeBlink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+    .hero-title { margin-bottom: 22px; }
+    .hero-title .acc {
+      color: var(--blue-l);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 700;
+    }
+    .hero-sub {
+      font-size: 1.05rem; line-height: 1.75; color: var(--lg);
+      margin-bottom: 36px; max-width: 540px;
+    }
+    .hero-sub strong { color: var(--white); }
+    .hero-acts { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+    /* ════════════════════════════════════════════
+       ── INCLUYE SECTION ──
+    ════════════════════════════════════════════ */
+    .inc-sec { background: var(--bg2); }
+    .inc-hd { text-align: center; margin-bottom: 52px; }
+    .inc-hd .cap { justify-content: center; }
+
+    .inc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .inc-card {
+      padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .inc-ico {
+      width: 44px; height: 44px; border-radius: 11px;
+      background: var(--blue-dim); border: 1px solid var(--border-b);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .inc-ico svg { color: var(--blue-l); }
+    .inc-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.05rem;
+      text-transform: uppercase; letter-spacing: .03em;
+      line-height: 1.2;
+    }
+    .inc-desc { font-size: .86rem; line-height: 1.68; color: var(--lg); }
+
+    /* ════════════════════════════════════════════
+       ── TIMELINE SECTION ──
+    ════════════════════════════════════════════ */
+    .tl-hd { text-align: center; margin-bottom: 60px; }
+    .tl-hd .cap { justify-content: center; }
+    .tl-wrap { max-width: 860px; margin: 0 auto; }
+    .tl-steps { display: flex; flex-direction: column; }
+    .tl-step {
+      display: grid; grid-template-columns: 100px 1fr;
+      gap: 24px; align-items: flex-start;
+      padding: 28px 0; border-bottom: 1px solid var(--border);
+    }
+    .tl-step:first-child { padding-top: 0; }
+    .tl-step:last-child  { border-bottom: none; }
+    .tl-day {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 1rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--blue-l);
+      padding-top: 2px;
+    }
+    .tl-day span {
+      display: block;
+      font-size: 2.4rem; font-weight: 900; line-height: 1;
+      color: rgba(0,77,255,.22); transition: color .3s;
+      letter-spacing: -.02em;
+    }
+    .tl-step:hover .tl-day span { color: var(--blue); }
+    .tl-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.2rem;
+      text-transform: uppercase; letter-spacing: .02em; margin-bottom: 8px;
+    }
+    .tl-desc { font-size: .88rem; color: var(--lg); line-height: 1.65; }
+    .tl-result {
+      margin-top: 10px; display: inline-flex; align-items: center; gap: 8px;
+      font-size: .78rem; color: var(--cyan); font-weight: 600;
+      letter-spacing: .04em; text-transform: uppercase;
+    }
+    .tl-result-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+
+    /* ════════════════════════════════════════════
+       ── WHO SECTION ──
+    ════════════════════════════════════════════ */
+    .who-sec { background: var(--bg2); }
+    .who-hd { text-align: center; margin-bottom: 52px; }
+    .who-hd .cap { justify-content: center; }
+    .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .who-card {
+      padding: 34px 28px; border-radius: 20px;
+      display: flex; flex-direction: column; gap: 14px;
+      transition: transform .3s;
+    }
+    .who-card:hover { transform: translateY(-4px); }
+    .who-card.wc-blue {
+      background: linear-gradient(135deg, rgba(0,77,255,.13) 0%, rgba(0,77,255,.04) 100%);
+      border: 1px solid rgba(0,77,255,.4);
+    }
+    .who-card.wc-mid {
+      background: linear-gradient(135deg, rgba(0,207,255,.08) 0%, rgba(0,77,255,.04) 100%);
+      border: 1px solid rgba(0,207,255,.22);
+    }
+    .who-card.wc-dark {
+      background: linear-gradient(135deg, rgba(255,255,255,.04) 0%, rgba(0,77,255,.04) 100%);
+      border: 1px solid var(--border);
+    }
+    .who-ico {
+      width: 44px; height: 44px; border-radius: 11px;
+      background: rgba(0,77,255,.1); border: 1px solid rgba(0,77,255,.28);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px; color: var(--blue-l);
+    }
+    .who-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 1.25rem;
+      text-transform: uppercase; letter-spacing: .02em; line-height: 1.15;
+    }
+    .who-desc { font-size: .88rem; color: var(--lg); line-height: 1.68; }
+    .who-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .72rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--cyan);
+      border: 1px solid rgba(0,212,255,.25); border-radius: 100px;
+      padding: 4px 12px; margin-top: 4px; width: fit-content;
+    }
+
+    /* ════════════════════════════════════════════
+       ── CTA SECTION ──
+    ════════════════════════════════════════════ */
+    .cta-sec {
+      padding: 120px 0; position: relative; overflow: hidden; text-align: center;
+    }
+    .cta-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(0,77,255,.22) 0%, rgba(0,77,255,.05) 40%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-rings {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center; pointer-events: none;
+    }
+    .cta-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(0,77,255,.1);
+    }
+    .cta-ring-1 { width: 600px; height: 600px; animation: ctaSpin 30s linear infinite; }
+    .cta-ring-2 { width: 420px; height: 420px; animation: ctaSpin 20s linear infinite reverse; border-color: rgba(0,207,255,.07); }
+    @keyframes ctaSpin { to { transform: rotate(360deg); } }
+    .cta-content { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+    .cta-sub { font-size: .98rem; color: var(--lg); line-height: 1.75; margin-bottom: 38px; }
+    .cta-sub strong { color: var(--white); }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 28px 0; }
+    .footer-in {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: .78rem; color: var(--grey); }
+    .footer-back {
+      font-size: .78rem; color: var(--grey); text-decoration: none;
+      display: flex; align-items: center; gap: 6px; transition: color .2s;
+    }
+    .footer-back:hover { color: var(--white); }
+
+    /* ── SCROLL REVEAL ── */
+    .fu { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.25,1,.5,1), transform .7s cubic-bezier(.25,1,.5,1); }
+    .fu.vis { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; }
+    .d3 { transition-delay: .3s; } .d4 { transition-delay: .4s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .inc-grid  { grid-template-columns: repeat(2, 1fr); }
+      .who-grid  { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      .nav-act .btn-s { display: none; }
+      .nav-act .btn-p { font-size: .78rem; padding: 10px 16px; }
+      .nav-burger { display: flex; }
+      .orb-1 { width: 520px; height: 150px; }
+      .orb-flat { width: 600px; height: 600px; }
+    }
+    @media (max-width: 600px) {
+      .sec  { padding: 60px 0; }
+      .wrap { padding: 0 16px; }
+      .inc-grid  { grid-template-columns: 1fr; }
+      .who-grid  { grid-template-columns: 1fr; }
+      .tl-step   { grid-template-columns: 72px 1fr; gap: 14px; }
+      .tl-day span { font-size: 1.8rem; }
+      .hero { padding: 110px 16px 60px; }
+      .cta-sec { padding: 80px 0; }
+      .orb-1 { width: 380px; height: 110px; }
+      .orb-2 { width: 280px; height: 80px; }
+      .orb-3 { display: none; }
+      .orb-flat { width: 420px; height: 420px; }
+      .hero-grid { background-size: 32px 32px; }
+      .reassure { flex-direction: column; align-items: center; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║              NAVBAR                 ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<nav class="nav" id="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-brand">
+      <img src="IntegrativeLogo.svg" height="26" alt="Integrative logo">
+      <span class="brand-name">Integrative</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="web.html" class="active">Tu Página Web</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+    </ul>
+
+    <div class="nav-act">
+      <a href="index.html#contacto" class="btn btn-s">Contacto</a>
+      <a href="index.html#llamada"  class="btn btn-p">Agendar llamada</a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mob" id="navMob">
+    <ul class="nav-mob-links">
+      <li><a href="servicios.html">Servicios</a></li>
+      <li><a href="web.html" class="active">Tu Página Web</a></li>
+      <li><a href="nosotros.html">Nosotros</a></li>
+    </ul>
+    <div class="nav-mob-act">
+      <a href="index.html#contacto" class="btn btn-s">Contacto</a>
+      <a href="index.html#llamada"  class="btn btn-p">Agendar llamada</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║              HERO                   ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="hero" id="inicio">
+
+  <!-- Dot grid -->
+  <div class="hero-grid" aria-hidden="true"></div>
+
+  <!-- Central glow -->
+  <div class="hero-glow-c" aria-hidden="true"></div>
+
+  <!-- Orbital rings -->
+  <div class="hero-orbs" aria-hidden="true">
+    <div class="orb orb-flat"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Scan line -->
+  <div class="scan-line" aria-hidden="true"></div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <div class="hero-badge fu">
+      <span class="badge-dot"></span>
+      Diseño web profesional · Entrega en 7 días
+    </div>
+
+    <h1 class="h1 hero-title fu d1">
+      Tu página web,<br>
+      <span class="acc">tu marca</span><br>
+      en el mundo.
+    </h1>
+
+    <p class="hero-sub fu d2">
+      Le damos vida digital a tu negocio. <strong>Usamos tu identidad existente</strong> o la
+      creamos desde cero — logo, colores, tipografía y todo. Diseño, desarrollo,
+      lanzamiento y <strong>mantenimiento continuo</strong>. Todo en un solo lugar.
+    </p>
+
+    <div class="hero-acts fu d3">
+      <div class="btnrow" style="justify-content:center;">
+        <a href="index.html#llamada" class="btn btn-p">
+          Quiero mi web
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#como" class="btn btn-s">Ver cómo funciona</a>
+      </div>
+      <div class="reassure" style="justify-content:center;">
+        <div class="ri">
+          <div class="ri-check"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Lista en menos de 7 días
+        </div>
+        <div class="ri">
+          <div class="ri-check"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Sin diseño previo necesario
+        </div>
+        <div class="ri">
+          <div class="ri-check"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Perfecta en celular
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║         QUÉ INCLUYE TU WEB          ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="sec inc-sec" id="incluye">
+  <div class="wrap">
+    <div class="inc-hd">
+      <div class="cap fu" style="justify-content:center;">
+        <div class="cap-line"></div><div class="cap-dot"></div>
+        <span class="cap-text">Todo incluido</span>
+        <div class="cap-dot"></div><div class="cap-line rev"></div>
+      </div>
+      <h2 class="h2 fu d1">¿Qué incluye<br>tu página web?</h2>
+      <p class="fu d2" style="color:var(--lg);font-size:.95rem;max-width:500px;margin:16px auto 0;">
+        No hay sorpresas ni costos ocultos. Esto es todo lo que recibís desde el primer día.
+      </p>
+    </div>
+
+    <div class="inc-grid">
+
+      <div class="inc-card gc fu">
+        <div class="inc-ico">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="3" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M6 17h8M10 15v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="inc-title">Diseño personalizado</div>
+        <p class="inc-desc">Nada de templates genéricos. Cada página refleja quién sos y habla con tus clientes. Diseño único, hecho para vos.</p>
+      </div>
+
+      <div class="inc-card gc fu d1">
+        <div class="inc-ico">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M4 17c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="inc-title">Tu identidad visual</div>
+        <p class="inc-desc">Si no tenés logo, paleta de colores ni tipografía, los desarrollamos nosotros. Te entregamos el branding completo de tu marca.</p>
+      </div>
+
+      <div class="inc-card gc fu d2">
+        <div class="inc-ico">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="2" width="9" height="14" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+            <rect x="8" y="6" width="9" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="inc-title">Perfecta en celular</div>
+        <p class="inc-desc">Tu web se ve y funciona impecable en cualquier dispositivo — celular, tablet o computadora. Sin excepciones.</p>
+      </div>
+
+      <div class="inc-card gc fu d1">
+        <div class="inc-ico">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M4 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="inc-title">Conectada a tus canales</div>
+        <p class="inc-desc">WhatsApp, Instagram, email y formulario de contacto integrados. Tus clientes te encuentran y te contactan con un solo clic.</p>
+      </div>
+
+      <div class="inc-card gc fu d2">
+        <div class="inc-ico">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 2c0 0 4 3 4 8s-4 8-4 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M2 10h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="inc-title">Visible en Google</div>
+        <p class="inc-desc">Configuramos los fundamentos para que Google encuentre tu web y la muestre cuando alguien busca lo que ofrecés.</p>
+      </div>
+
+      <div class="inc-card gc fu d3">
+        <div class="inc-ico">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 2L3 7v10h5v-5h4v5h5V7L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="inc-title">Hosting y dominio</div>
+        <p class="inc-desc">Te asesoramos en la elección, configuramos todo y dejamos tu web online. Vos no tenés que preocuparte por nada técnico.</p>
+      </div>
+
+      <div class="inc-card gc fu d1" style="grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 24px; padding: 28px 32px;">
+        <div class="inc-ico" style="width:52px;height:52px;border-radius:14px;flex-shrink:0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3a9 9 0 1 0 0 18A9 9 0 0 0 12 3Z" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 8v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 20l-2 2M19 20l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="inc-title" style="margin-bottom:6px;">Mantenimiento y actualizaciones</div>
+          <p class="inc-desc" style="max-width:680px;">Una vez lanzada tu web, no te dejamos solo. Actualizamos contenido, corregimos lo que sea necesario y nos aseguramos de que siempre esté funcionando perfectamente. <strong style="color:var(--white);">¿Tu web no la hicimos nosotros?</strong> No importa — también nos encargamos del mantenimiento de sitios existentes.</p>
+        </div>
+      </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║        TIMELINE: 7 DÍAS             ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="sec" id="como">
+  <div class="wrap">
+    <div class="tl-hd">
+      <div class="cap fu" style="justify-content:center;">
+        <div class="cap-line"></div><div class="cap-dot"></div>
+        <span class="cap-text">El proceso</span>
+        <div class="cap-dot"></div><div class="cap-line rev"></div>
+      </div>
+      <h2 class="h2 fu d1">Tu web lista<br>en 7 días</h2>
+      <p class="fu d2" style="color:var(--lg);font-size:.95rem;max-width:480px;margin:16px auto 0;">
+        Un proceso claro, sin idas y vueltas. Sabés en todo momento qué está pasando y cuándo estará lista.
+      </p>
+    </div>
+
+    <div class="tl-wrap">
+      <div class="tl-steps">
+
+        <div class="tl-step fu">
+          <div class="tl-day">
+            <span>01</span>
+            Día 1
+          </div>
+          <div>
+            <div class="tl-title">Brief y estrategia</div>
+            <p class="tl-desc">Nos contás quién sos, a quién le hablás y qué querés lograr con tu web. Definimos la estructura, el estilo visual y los objetivos concretos.</p>
+            <div class="tl-result"><span class="tl-result-dot"></span>Estrategia y estructura definidas</div>
+          </div>
+        </div>
+
+        <div class="tl-step fu d1">
+          <div class="tl-day">
+            <span>2–3</span>
+            Días
+          </div>
+          <div>
+            <div class="tl-title">Diseño visual completo</div>
+            <p class="tl-desc">Diseñamos cada pantalla con tu identidad — o la creamos si no la tenés. Vos aprobás el diseño antes de que empecemos a construir.</p>
+            <div class="tl-result"><span class="tl-result-dot"></span>Diseño aprobado por vos</div>
+          </div>
+        </div>
+
+        <div class="tl-step fu d2">
+          <div class="tl-day">
+            <span>4–5</span>
+            Días
+          </div>
+          <div>
+            <div class="tl-title">Desarrollo y contenido</div>
+            <p class="tl-desc">Convertimos el diseño en un sitio real, rápido y conectado a todos tus canales. Cargamos el contenido y revisamos que todo funcione a la perfección.</p>
+            <div class="tl-result"><span class="tl-result-dot"></span>Web funcionando en entorno de prueba</div>
+          </div>
+        </div>
+
+        <div class="tl-step fu d3">
+          <div class="tl-day">
+            <span>06</span>
+            Día 6
+          </div>
+          <div>
+            <div class="tl-title">Revisión y ajustes</div>
+            <p class="tl-desc">Te mostramos el resultado final. Hacemos todos los ajustes que necesites hasta que estés conforme. Sin costos extra.</p>
+            <div class="tl-result"><span class="tl-result-dot"></span>Aprobación final</div>
+          </div>
+        </div>
+
+        <div class="tl-step fu d4">
+          <div class="tl-day">
+            <span>07</span>
+            Día 7
+          </div>
+          <div>
+            <div class="tl-title">Lanzamiento</div>
+            <p class="tl-desc">Tu web está online, el dominio configurado y todo listo para recibir clientes. Te entregamos accesos y una guía para actualizarla cuando quieras.</p>
+            <div class="tl-result"><span class="tl-result-dot"></span>Tu web live ante el mundo</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║           ¿PARA QUIÉN?              ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="sec who-sec" id="quienes">
+  <div class="wrap">
+    <div class="who-hd">
+      <div class="cap fu" style="justify-content:center;">
+        <div class="cap-line"></div><div class="cap-dot"></div>
+        <span class="cap-text">¿Para quién?</span>
+        <div class="cap-dot"></div><div class="cap-line rev"></div>
+      </div>
+      <h2 class="h2 fu d1">Si te identificás con<br>alguno de estos casos,<br>es para vos.</h2>
+    </div>
+
+    <div class="who-grid">
+
+      <div class="who-card wc-blue fu">
+        <div class="who-ico">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M11 2L3 8v11h5v-5h6v5h5V8L11 2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="who-title">Tu negocio no tiene web</div>
+        <p class="who-desc">Estás en Instagram o en el boca a boca, pero tus clientes te buscan en Google y no te encuentran. Eso es plata que se va todos los días.</p>
+        <div class="who-pill"><span style="color:var(--cyan);">▸</span> Empezá desde cero</div>
+      </div>
+
+      <div class="who-card wc-mid fu d1">
+        <div class="who-ico">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M4 11a7 7 0 1 0 14 0 7 7 0 0 0-14 0Z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M11 7v4l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="who-title">Tu web es vieja o no te representa</div>
+        <p class="who-desc">La web que tenés da una imagen que ya no va con tu empresa. Una mala primera impresión online aleja clientes antes de que te llamen.</p>
+        <div class="who-pill"><span style="color:var(--cyan);">▸</span> Renovamos lo que tenés</div>
+      </div>
+
+      <div class="who-card wc-dark fu d2">
+        <div class="who-ico">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M11 3v4M11 3l-3 3M11 3l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 10h14M5 10l1.5 8h9L17 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="who-title">Emprendés y querés arrancar bien</div>
+        <p class="who-desc">Estás lanzando algo nuevo y necesitás una presencia digital que transmita profesionalismo desde el primer día, sin gastar una fortuna.</p>
+        <div class="who-pill"><span style="color:var(--cyan);">▸</span> Arrancá con el pie derecho</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║              CTA                    ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<section class="cta-sec" id="llamada">
+  <div class="cta-glow"></div>
+  <div class="cta-rings">
+    <div class="cta-ring cta-ring-1"></div>
+    <div class="cta-ring cta-ring-2"></div>
+  </div>
+  <div class="wrap">
+    <div class="cta-content">
+      <div class="cap fu" style="justify-content:center;">
+        <div class="cap-line"></div><div class="cap-dot"></div>
+        <span class="cap-text">Empezar ahora</span>
+        <div class="cap-dot"></div><div class="cap-line rev"></div>
+      </div>
+      <h2 class="h2 fu d1" style="max-width:560px;margin:0 auto 18px;">
+        ¿Listo para tener tu web<br>esta semana?
+      </h2>
+      <p class="cta-sub fu d2">
+        Agendá una <strong>llamada gratuita de 30 minutos</strong> y te contamos todo.
+        Sin compromiso, sin rodeos.
+      </p>
+      <div class="btnrow fu d3" style="justify-content:center;margin-bottom:18px;">
+        <a href="index.html#llamada" class="btn btn-p" style="font-size:.95rem;padding:14px 28px;">
+          Quiero mi web
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="index.html#contacto" class="btn btn-s">Enviar mensaje</a>
+      </div>
+      <div class="reassure fu d4" style="justify-content:center;">
+        <div class="ri">
+          <div class="ri-check"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          100% gratuita y sin compromiso
+        </div>
+        <div class="ri">
+          <div class="ri-check"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Entrega garantizada en 7 días
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ╔══════════════════════════════════════╗ -->
+<!-- ║              FOOTER                 ║ -->
+<!-- ╚══════════════════════════════════════╝ -->
+<footer class="footer">
+  <div class="footer-in">
+    <span class="footer-copy">© 2026 Integrative. Todos los derechos reservados.</span>
+    <a href="index.html" class="footer-back">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Volver al inicio
+    </a>
+  </div>
+</footer>
+
+<script>
+  /* Navbar scroll */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('on', window.scrollY > 20);
+  }, { passive: true });
+
+  /* Mobile nav */
+  const burger = document.getElementById('navBurger');
+  const navMob = document.getElementById('navMob');
+  if (burger && navMob) {
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      navMob.classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-mob a').forEach(a => {
+      a.addEventListener('click', () => {
+        burger.classList.remove('open');
+        navMob.classList.remove('open');
+      });
+    });
+  }
+
+  /* Scroll-reveal */
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.10 });
+  document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
