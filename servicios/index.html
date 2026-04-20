@@ -317,6 +317,7 @@
       z-index: 0;
       overflow: hidden;
       mix-blend-mode: screen;
+      contain: paint;
       /* fade out center so text stays readable, keep wings/edges glowing */
       mask-image: radial-gradient(ellipse 62% 52% at 50% 47%,
         transparent        22%,
@@ -329,32 +330,36 @@
         rgba(0,0,0,.55)    62%,
         black              82%);
     }
+    .hero-logo-bg::before {
+      content: '';
+      position: absolute;
+      inset: 8% -8%;
+      background:
+        radial-gradient(ellipse 42% 26% at 28% 46%, rgba(0,77,255,.34), transparent 70%),
+        radial-gradient(ellipse 42% 26% at 72% 46%, rgba(0,207,255,.22), transparent 70%),
+        radial-gradient(ellipse 34% 20% at 50% 56%, rgba(0,77,255,.20), transparent 72%);
+      opacity: .75;
+      animation: logoAura 6s ease-in-out infinite alternate;
+      will-change: opacity;
+    }
     .hero-logo-bg svg {
       width: min(115%, 1200px);
-      animation: logoPulse 7s ease-in-out infinite,
-                 logoGlow  3.5s ease-in-out infinite alternate;
-      will-change: transform, filter, opacity;
+      opacity: .46;
+      animation: logoPulse 9s ease-in-out infinite;
+      transform: translateZ(0);
+      will-change: transform;
     }
     @keyframes logoPulse {
       0%, 100% { transform: scale(1)     translateY(0px); }
-      50%       { transform: scale(1.028) translateY(-16px); }
+      50%       { transform: scale(1.018) translateY(-10px); }
     }
-    @keyframes logoGlow {
-      0% {
-        opacity: .30;
-        filter:
-          drop-shadow(0 0  6px rgba(0, 77,255,1))
-          drop-shadow(0 0 20px rgba(0, 77,255,.6))
-          drop-shadow(0 0 55px rgba(0, 77,255,.28));
-      }
-      100% {
-        opacity: .65;
-        filter:
-          drop-shadow(0 0 10px rgba(30,110,255,1))
-          drop-shadow(0 0 36px rgba(0, 77,255,.9))
-          drop-shadow(0 0 80px rgba(0,207,255,.6))
-          drop-shadow(0 0 140px rgba(0, 77,255,.32));
-      }
+    @keyframes logoAura {
+      0%   { opacity: .50; }
+      100% { opacity: .82; }
+    }
+    .hero-logo-bg.is-paused::before,
+    .hero-logo-bg.is-paused svg {
+      animation-play-state: paused;
     }
     /* keep text above logo bg */
     .page-hero > *:not(.hero-logo-bg) { position: relative; z-index: 1; }
@@ -564,14 +569,13 @@
           rgba(0,0,0,.48)    58%,
           black              78%);
       }
-      /* Reducir intensidad del glow en móvil (performance) */
+      .hero-logo-bg::before { opacity: .48; animation: none; }
+      .hero-logo-bg svg { opacity: .34; animation-duration: 12s; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-logo-bg::before,
       .hero-logo-bg svg {
-        animation: logoPulse 7s ease-in-out infinite,
-                   logoGlow  3.5s ease-in-out infinite alternate;
-      }
-      @keyframes logoGlow {
-        0%   { opacity: .22; filter: drop-shadow(0 0 6px rgba(0,77,255,1)) drop-shadow(0 0 18px rgba(0,77,255,.5)); }
-        100% { opacity: .48; filter: drop-shadow(0 0 9px rgba(30,110,255,1)) drop-shadow(0 0 30px rgba(0,77,255,.8)) drop-shadow(0 0 65px rgba(0,207,255,.45)); }
+        animation: none;
       }
     }
   </style>
@@ -970,6 +974,19 @@
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
   }, { threshold: 0.10 });
   document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+
+  /* Pause the hero logo while it is off-screen to avoid background GPU work on lower-end PCs. */
+  const heroLogoBg = document.querySelector('.hero-logo-bg');
+  if (heroLogoBg) {
+    const logoMotionObs = new IntersectionObserver(([entry]) => {
+      heroLogoBg.classList.toggle('is-paused', !entry.isIntersecting);
+    }, { rootMargin: '120px 0px', threshold: 0 });
+
+    logoMotionObs.observe(heroLogoBg);
+    document.addEventListener('visibilitychange', () => {
+      heroLogoBg.classList.toggle('is-paused', document.hidden);
+    });
+  }
 </script>
 </body>
 </html>
